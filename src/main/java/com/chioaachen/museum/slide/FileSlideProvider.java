@@ -1,5 +1,6 @@
 package com.chioaachen.museum.slide;
 
+import com.chioaachen.museum.persistence.Provider;
 import com.chioaachen.museum.persistence.Repository;
 import com.chioaachen.museum.slide.caption.CaptionEntry;
 import com.chioaachen.museum.slide.caption.CaptionEntryDeserializer;
@@ -12,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileSlideProvider implements SlideProvider {
+public class FileSlideProvider implements Provider<Slide> {
 
   private static final String CAPTION_PATH_SUFFIX = "/captions/";
   private static final String NO_CAPTION = "Kein Untertitel";
@@ -67,7 +68,7 @@ public class FileSlideProvider implements SlideProvider {
   }
 
   @Override
-  public Slide[] getSlides() {
+  public Slide[] getAll() {
     return slides;
   }
 }

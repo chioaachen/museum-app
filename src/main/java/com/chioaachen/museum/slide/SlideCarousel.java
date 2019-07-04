@@ -1,12 +1,14 @@
 package com.chioaachen.museum.slide;
 
+import com.chioaachen.museum.persistence.Provider;
+
 public final class SlideCarousel {
 
   private final Slide[] slides;
   private int index;
 
-  public SlideCarousel(SlideProvider slideProvider) {
-    this.slides = slideProvider.getSlides();
+  public SlideCarousel(Provider<Slide> slideProvider) {
+    this.slides = slideProvider.getAll();
     reset();
   }
 

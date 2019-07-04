@@ -1,88 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane id="root" prefHeight="800.0" prefWidth="1000.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <left>
-      <VBox id="sidebar" alignment="CENTER" BorderPane.alignment="CENTER">
-         <children>
-            <Button id="start" mnemonicParsing="false" text="Start" VBox.vgrow="ALWAYS">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Button id="back" mnemonicParsing="false" text="Zurück">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Button id="settings" mnemonicParsing="false" text="Einstellungen">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-         </children>
-      </VBox>
-   </left>
-   <center>
-      <GridPane opacity="0.91" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="601.0" minWidth="0.0" prefWidth="475.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="268.0" minWidth="10.0" prefWidth="268.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="408.0" minHeight="4.0" prefHeight="293.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="221.0" minHeight="0.0" prefHeight="107.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="944.0" minHeight="10.0" prefHeight="400.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Button id="sap-btn" mnemonicParsing="false" text="SAP Datenbank" GridPane.rowIndex="2">
-               <graphic>
-                  <ImageView fitHeight="50.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/sap-logo.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <effect>
-                  <DropShadow height="5.0" offsetX="2.0" offsetY="2.0" radius="2.0" width="5.0" />
-               </effect>
-            </Button>
-            <MediaView id="media-view" fitHeight="400.0" fitWidth="400.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <ImageView id="slider-view" fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-               <viewport>
-                  <Rectangle2D />
-               </viewport>
-               <image>
-                  <Image url="@../../../../../../../../MuseumDatenbank/potpourri/0Bronkhorst.jpg" />
-               </image>
-            </ImageView>
-            <Button id="slider-forward-btn" mnemonicParsing="false" text="&gt;" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button id="slider-back-btn" mnemonicParsing="false" text="&lt;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <TextArea id="caption-text" editable="false" promptText="Untertitel" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </TextArea>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </GridPane>
-   </center>
-</BorderPane>
+
+<Scene stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <root>
+      <BorderPane id="root" prefHeight="800.0" prefWidth="1000.0">
+         <left>
+            <VBox id="sidebar" alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <Button id="start" mnemonicParsing="false" text="Start" VBox.vgrow="ALWAYS">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button id="back" mnemonicParsing="false" text="Zurück">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button id="settings" mnemonicParsing="false" text="Einstellungen">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="NEVER" minWidth="0.0" />
+                      <ColumnConstraints hgrow="NEVER" minWidth="7.0" prefWidth="400.0" />
+                        <ColumnConstraints hgrow="NEVER" minWidth="0.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="0.0" vgrow="NEVER" />
+                      <RowConstraints minHeight="0.0" prefHeight="100.0" vgrow="NEVER" />
+                    </rowConstraints>
+                     <children>
+                        <ImageView id="slider-view" fitHeight="250.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                           <image>
+                              <Image url="@../../../../../../../../MuseumDatenbank/potpourri/16.jpg" />
+                           </image>
+                        </ImageView>
+                        <Button id="slider-back-btn" mnemonicParsing="false" text="&lt;" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                           <GridPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <Button id="slider-forward-btn" mnemonicParsing="false" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                           <GridPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </Button>
+                        <TextArea id="caption-text" editable="false" prefWidth="200.0" text="Untertitel" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                           <GridPane.margin>
+                              <Insets top="20.0" />
+                           </GridPane.margin>
+                           <font>
+                              <Font name="Arial Black" size="16.0" />
+                           </font>
+                        </TextArea>
+                     </children>
+                  </GridPane>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </root>
+</Scene>
