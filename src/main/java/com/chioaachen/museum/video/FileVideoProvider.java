@@ -41,8 +41,8 @@ public final class FileVideoProvider implements Provider<Video> {
           }
         }
       }
-
-      Video video = new Video(preview, media);
+      String title = previewFileName.replace('_', ' ');
+      Video video = new Video(title.toUpperCase(), preview, media);
       videoList.add(video);
     }
 

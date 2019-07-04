@@ -5,20 +5,26 @@ import javafx.scene.media.Media;
 
 public final class Video {
 
-  private final Image preview;
+  private final String title;
+  private final Image previewImage;
   private final Media media;
 
-  public Video(Image preview, Media media) {
-    this.preview = preview;
+  public Video(String title, Image previewImage, Media media) {
+    this.title = title;
+    this.previewImage = previewImage;
     this.media = media;
   }
 
   public boolean hasPreviewImage() {
-    return preview != null;
+    return previewImage != null;
   }
 
-  public Image getPreview() {
-    return preview;
+  public String getTitle() {
+    return title;
+  }
+
+  public Image getPreviewImage() {
+    return previewImage;
   }
 
   public Media getMedia() {
