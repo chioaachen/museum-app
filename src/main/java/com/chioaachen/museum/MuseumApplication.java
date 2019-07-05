@@ -16,15 +16,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.util.List;
 
 public final class MuseumApplication extends Application {
 
@@ -47,16 +51,67 @@ public final class MuseumApplication extends Application {
     );
 
     GridPane container = (GridPane) scene.lookup("#container");
-    ObservableList<Node> children = container.getChildren();
-
-    GridPane.setConstraints(videoChooser, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
-    GridPane.setConstraints(videoViewer, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
-    GridPane.setConstraints(potpourri, 1, 0, 1, 1, HPos.CENTER, VPos.CENTER);
 
     container.getChildren().addAll(
       videoChooser,
       potpourri
     );
+
+    Button startButton = (Button) scene.lookup("#start-btn");
+    Button backButton = (Button) scene.lookup("#back-btn");
+    Button settingsButton = (Button) scene.lookup("#settings");
+    Button sapButton = (Button) scene.lookup("#sap-btn");
+    Button sliderBackButton = (Button) scene.lookup("#slider-back-btn");
+    Button sliderForwardButton = (Button) scene.lookup("#slider-forward-btn");
+
+    ImageView sliderView = (ImageView) scene.lookup("#slider-view");
+    TextArea captionText = (TextArea) scene.lookup("#caption-text");
+
+    ObservableList<Node> children = container.getChildren();
+
+    SlideCarousel slideCarousel = new SlideCarousel(
+      new FileSlideProvider("/MuseumDatenbank/potpourri")
+    );
+
+    Slide currentSlide = slideCarousel.getCurrentSlide();
+    sliderView.setImage(currentSlide.getImage());
+    captionText.setText(currentSlide.getCaption());
+
+    ScheduledService<Void> timedSlider = new ScheduledService<>() {
+      @Override
+      protected Task<Void> createTask() {
+        return new Task<>() {
+          @Override
+          protected Void call() {
+            slideCarousel.next();
+            Slide slide = slideCarousel.getCurrentSlide();
+            sliderView.setImage(slide.getImage());
+            captionText.setText(slide.getCaption());
+            return null;
+          }
+        };
+      }
+    };
+    timedSlider.setPeriod(Duration.seconds(10));
+    timedSlider.start();
+
+    sliderForwardButton.setOnAction(actionEvent -> {
+      slideCarousel.next();
+      Slide slide = slideCarousel.getCurrentSlide();
+      sliderView.setImage(slide.getImage());
+      captionText.setText(slide.getCaption());
+    });
+
+    sliderBackButton.setOnAction(actionEvent -> {
+      slideCarousel.before();
+      Slide slide = slideCarousel.getCurrentSlide();
+      sliderView.setImage(slide.getImage());
+      captionText.setText(slide.getCaption());
+    });
+
+    GridPane.setConstraints(videoChooser, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
+    GridPane.setConstraints(videoViewer, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
+    GridPane.setConstraints(potpourri, 1, 0, 1, 1, HPos.CENTER, VPos.CENTER);
 
     Provider<Video> videoProvider = new FileVideoProvider("/MuseumDatenbank/videos");
     Video[] videos = videoProvider.getAll();
@@ -95,6 +150,34 @@ public final class MuseumApplication extends Application {
 
         MediaPlayer mediaPlayer = new MediaPlayer(current.getMedia());
         mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setOnEndOfMedia(() -> {
+          children.removeAll(
+            videoViewer,
+            potpourri
+          );
+
+          children.addAll(
+            videoChooser,
+            potpourri
+          );
+        });
+
+        backButton.setOnAction(e -> {
+          if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+            mediaPlayer.stop();
+          }
+          children.removeAll(
+            videoChooser,
+            videoViewer,
+            potpourri
+          );
+
+          children.addAll(
+            videoChooser,
+            potpourri
+          );
+        });
+
         videoViewer.setMediaPlayer(mediaPlayer);
       });
 
@@ -105,56 +188,9 @@ public final class MuseumApplication extends Application {
       rowIndex++;
     }
 
-    Button startButton = (Button) scene.lookup("#sap-btn");
-    Button backButton = (Button) scene.lookup("#back");
-    Button settingsButton = (Button) scene.lookup("#settings");
-    Button sapButton = (Button) scene.lookup("#sap-btn");
-    Button sliderBackButton = (Button) scene.lookup("#slider-back-btn");
-    Button sliderForwardButton = (Button) scene.lookup("#slider-forward-btn");
-
-    ImageView imageView = (ImageView) scene.lookup("#slider-view");
-    TextArea captionText = (TextArea) scene.lookup("#caption-text");
-
-    SlideCarousel slideCarousel = new SlideCarousel(
-      new FileSlideProvider("/MuseumDatenbank/potpourri")
-    );
-
-    Slide currentSlide = slideCarousel.getCurrentSlide();
-    imageView.setImage(currentSlide.getImage());
-    captionText.setText(currentSlide.getCaption());
-
-    sliderForwardButton.setOnAction(actionEvent -> {
-      slideCarousel.next();
-      Slide slide = slideCarousel.getCurrentSlide();
-      imageView.setImage(slide.getImage());
-      captionText.setText(slide.getCaption());
-    });
-
-    sliderBackButton.setOnAction(actionEvent -> {
-      slideCarousel.before();
-      Slide slide = slideCarousel.getCurrentSlide();
-      imageView.setImage(slide.getImage());
-      captionText.setText(slide.getCaption());
-    });
-
-    ScheduledService<Void> timedSlider = new ScheduledService<>() {
-      @Override
-      protected Task<Void> createTask() {
-        return new Task<>() {
-          @Override
-          protected Void call() {
-            slideCarousel.next();
-            Slide slide = slideCarousel.getCurrentSlide();
-            imageView.setImage(slide.getImage());
-            captionText.setText(slide.getCaption());
-            return null;
-          }
-        };
-      }
-    };
-    timedSlider.setPeriod(Duration.seconds(10));
-    timedSlider.start();
-
+    primaryStage.setResizable(false);
+    primaryStage.setAlwaysOnTop(true);
+    primaryStage.setFullScreen(true);
     primaryStage.setScene(scene);
     primaryStage.setTitle("CHIO Aachen - Museum");
     primaryStage.show();

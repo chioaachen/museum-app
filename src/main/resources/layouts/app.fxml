@@ -16,17 +16,17 @@
          <left>
             <VBox id="sidebar" alignment="CENTER" BorderPane.alignment="CENTER">
                <children>
-                  <Button id="start" mnemonicParsing="false" text="Start" VBox.vgrow="ALWAYS">
+                  <Button id="start-btn" mnemonicParsing="false" text="Start" VBox.vgrow="ALWAYS">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button id="back" mnemonicParsing="false" text="Zurück">
+                  <Button id="back-btn" mnemonicParsing="false" text="Zurück">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Button>
-                  <Button id="settings" mnemonicParsing="false" text="Einstellungen">
+                  <Button id="settings-btn" mnemonicParsing="false" text="Einstellungen">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -35,7 +35,7 @@
             </VBox>
          </left>
          <center>
-            <GridPane id="container" gridLinesVisible="true" hgap="20.0" vgap="20.0">
+            <GridPane id="container" hgap="20.0" vgap="20.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="50.0" />
                 <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="50.0" prefWidth="100.0" />
