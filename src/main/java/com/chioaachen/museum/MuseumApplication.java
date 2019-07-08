@@ -28,8 +28,6 @@ import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.List;
-
 public final class MuseumApplication extends Application {
 
   public MuseumApplication() {
@@ -52,10 +50,12 @@ public final class MuseumApplication extends Application {
 
     GridPane container = (GridPane) scene.lookup("#container");
 
-    container.getChildren().addAll(
-      videoChooser,
-      potpourri
-    );
+    container.add(videoChooser, 0, 0);
+    container.add(potpourri, 1, 0);
+
+    GridPane.setConstraints(videoChooser, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
+    GridPane.setConstraints(videoViewer, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
+    GridPane.setConstraints(potpourri, 1, 0, 1, 1, HPos.CENTER, VPos.CENTER);
 
     Button startButton = (Button) scene.lookup("#start-btn");
     Button backButton = (Button) scene.lookup("#back-btn");
@@ -109,10 +109,6 @@ public final class MuseumApplication extends Application {
       captionText.setText(slide.getCaption());
     });
 
-    GridPane.setConstraints(videoChooser, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
-    GridPane.setConstraints(videoViewer, 0, 0, 1, 1, HPos.CENTER, VPos.CENTER);
-    GridPane.setConstraints(potpourri, 1, 0, 1, 1, HPos.CENTER, VPos.CENTER);
-
     Provider<Video> videoProvider = new FileVideoProvider("/MuseumDatenbank/videos");
     Video[] videos = videoProvider.getAll();
     int rowIndex = 0;
@@ -136,46 +132,27 @@ public final class MuseumApplication extends Application {
       }
 
       videoButton.setId("btn");
+      videoButton.setPrefWidth(200);
 
       videoButton.setOnAction(event -> {
-        children.removeAll(
-          videoChooser,
-          potpourri
-        );
-
-        children.addAll(
-          videoViewer,
-          potpourri
-        );
+        replaceAt(container, 0, 0, videoChooser, videoViewer);
 
         MediaPlayer mediaPlayer = new MediaPlayer(current.getMedia());
         mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setOnEndOfMedia(() -> {
-          children.removeAll(
-            videoViewer,
-            potpourri
-          );
-
-          children.addAll(
-            videoChooser,
-            potpourri
-          );
-        });
+        mediaPlayer.setOnEndOfMedia(() -> replaceAt(container, 0, 0, videoViewer, videoChooser));
 
         backButton.setOnAction(e -> {
           if (mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             mediaPlayer.stop();
           }
-          children.removeAll(
-            videoChooser,
-            videoViewer,
-            potpourri
-          );
 
-          children.addAll(
-            videoChooser,
-            potpourri
-          );
+          if (children.contains(videoChooser)) {
+            replaceAt(container, 0, 0, videoChooser, videoViewer);
+          } else {
+            replaceAt(container, 0, 0, videoViewer, videoChooser);
+          }
+
+          backButton.setOnAction(null);
         });
 
         videoViewer.setMediaPlayer(mediaPlayer);
@@ -194,5 +171,11 @@ public final class MuseumApplication extends Application {
     primaryStage.setScene(scene);
     primaryStage.setTitle("CHIO Aachen - Museum");
     primaryStage.show();
+  }
+
+  private static void replaceAt(GridPane container, int column, int row, Node nodeToReplace, Node newNode) {
+    ObservableList<Node> children = container.getChildren();
+    children.remove(nodeToReplace);
+    container.add(newNode, column, row);
   }
 }
